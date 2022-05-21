@@ -1,6 +1,7 @@
 #!/bin/bash
 
 # certificate generator for SSL/TLS communication
+cd ./client_certs
 
 #Required
 domain="$1"

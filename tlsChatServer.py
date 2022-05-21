@@ -15,7 +15,7 @@ FORMAT = 'utf-8'
 username2socket = {} 
 
 
-def setup_SSL_context() -> ssl.SSLContext:
+def setup_SSL_context(certPath: str = "./server_certs", clientsCertPath: str = "./client_certs") -> ssl.SSLContext:
     """Create SSLContext object to manage settings and certificates which are inherited by SSL socket (through SSLContext.wrap_socket())
 
     Returns:
@@ -26,10 +26,10 @@ def setup_SSL_context() -> ssl.SSLContext:
     # require certificate 
     context.verify_mode = ssl.CERT_REQUIRED
     # Load a private key and Corresponding certificate
-    context.load_cert_chain(certfile="server.crt", keyfile="server.key")
+    context.load_cert_chain(certfile=f"{certPath}/server.crt", keyfile=f"{certPath}/server.key")
     # Load a set of "certification authority" certificates used to validate other peer's 
     # certificates. 
-    context.load_verify_locations('clients.pem')
+    context.load_verify_locations(f"{clientsCertPath}/clients.pem")
     # Set the cipher (encryption method)
     context.set_ciphers('ECDHE-RSA-AES128-GCM-SHA256')
     return context

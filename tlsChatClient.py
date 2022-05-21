@@ -11,7 +11,7 @@ PORT = 5432
 HEADER_LENGTH = 2
 FORMAT = 'utf-8'
 
-def setup_SSL_context(commonName: str) -> ssl.SSLContext:
+def setup_SSL_context(commonName: str, certPath: str = "./client_certs") -> ssl.SSLContext:
     """Create SSLContext object with client certs on paths publicKeyPath, privateKeyPath.
 
     Args:
@@ -27,10 +27,10 @@ def setup_SSL_context(commonName: str) -> ssl.SSLContext:
         # require certificate 
         context.verify_mode = ssl.CERT_REQUIRED
         # Load a private key and Corresponding certificate
-        context.load_cert_chain(certfile=f"{commonName}.crt", keyfile=f"{commonName}.key")
+        context.load_cert_chain(certfile=f"{certPath}/{commonName}.crt", keyfile=f"{certPath}/{commonName}.key")
         # Load a set of "certification authority" certificates used to validate other peer's 
         # certificates. 
-        context.load_verify_locations('server.crt')
+        context.load_verify_locations('./server_certs/server.crt')
         # Set the cipher (encryption method)
         context.set_ciphers('ECDHE-RSA-AES128-GCM-SHA256')
         return context
